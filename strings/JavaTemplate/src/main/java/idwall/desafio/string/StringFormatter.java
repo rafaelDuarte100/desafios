@@ -1,14 +1,16 @@
 package idwall.desafio.string;
 
+import idwall.desafio.exception.PalavraMaiorQueTamanhoLimiteException;
+
 /**
  * Created by Rodrigo Catão Araujo on 06/02/2018.
  */
 public abstract class StringFormatter {
 
-    private Integer limit;
+    protected Integer limit;
 
-    public StringFormatter() {
-        this.limit = 40;
+    public StringFormatter(int limite) {
+        this.limit = limite;
     }
 
     /**
@@ -16,6 +18,7 @@ public abstract class StringFormatter {
      *
      * @param text
      * @return
+     * @throws PalavraMaiorQueTamanhoLimiteException 
      */
-    public abstract String format(String text);
+    public abstract String format(String text) throws PalavraMaiorQueTamanhoLimiteException;
 }

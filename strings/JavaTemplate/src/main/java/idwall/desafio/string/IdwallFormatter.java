@@ -5,7 +5,11 @@ package idwall.desafio.string;
  */
 public class IdwallFormatter extends StringFormatter {
 
-    /**
+    public IdwallFormatter(int limite) {
+		super(limite);
+	}
+
+	/**
      * Should format as described in the challenge
      *
      * @param text
