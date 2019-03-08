@@ -1,4 +1,4 @@
-package idwall.desafio.arquivo;
+package idwall.desafio.fonteTexto;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,11 +8,9 @@ import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import idwall.desafio.FonteTexto;
-
 public class FonteTextoEmArquivo implements FonteTexto {
 
-	protected static final String NOME_ARQUIVO = "arquivos/input_parte1.txt";
+	protected static final String NOME_ARQUIVO = "arquivos_entrada/input_parte1.txt";
 	
 	@Override
 	public String getTexto() throws IOException {

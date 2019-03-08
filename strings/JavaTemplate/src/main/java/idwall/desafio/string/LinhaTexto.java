@@ -1,7 +1,6 @@
 package idwall.desafio.string;
 
 import idwall.desafio.exception.PalavraExcedeTamanhoLinhaException;
-import idwall.desafio.exception.PalavraMaiorQueTamanhoLimiteException;
 
 public class LinhaTexto {
 
@@ -12,9 +11,9 @@ public class LinhaTexto {
 		this.tamanhoLimiteLinha = tamanhoLimiteLinhas;
 	}
 
-	public void adicionarPalavra(String palavra) throws PalavraMaiorQueTamanhoLimiteException, PalavraExcedeTamanhoLinhaException {
+	public void adicionarPalavra(String palavra) throws RuntimeException, PalavraExcedeTamanhoLinhaException {
 		if (palavra.length() > tamanhoLimiteLinha)
-			throw new PalavraMaiorQueTamanhoLimiteException("A palavra \"" + palavra + "\" excede o tamanho máximo de uma linha " + tamanhoLimiteLinha + " caracteres.");
+			throw new RuntimeException("A palavra \"" + palavra + "\" excede o tamanho máximo de uma linha " + tamanhoLimiteLinha + " caracteres.");
 		
 		if (!palavraCabeNaLinha(palavra))
 			throw new PalavraExcedeTamanhoLinhaException();

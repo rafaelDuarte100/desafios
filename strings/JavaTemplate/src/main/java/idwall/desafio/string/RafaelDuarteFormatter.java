@@ -1,10 +1,11 @@
 package idwall.desafio.string;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import idwall.desafio.exception.PalavraExcedeTamanhoLinhaException;
-import idwall.desafio.exception.PalavraMaiorQueTamanhoLimiteException;
 
 public class RafaelDuarteFormatter extends StringFormatter {
 
@@ -12,28 +13,29 @@ public class RafaelDuarteFormatter extends StringFormatter {
 	private LinhaTexto linhaAtual;
 	
 	public RafaelDuarteFormatter(int limite) {
-		super(limite);
+		super(limite, false);
 		linhas = new ArrayList<>();
 		linhaAtual = new LinhaTexto(limite);
 	}
 	
-	public String format(String texto) throws PalavraMaiorQueTamanhoLimiteException {
+	public String format(String texto) {
 		adicionarPalavrasAoTexto(texto);
 		return getTextoFormatado();
 	}
 
-	private void adicionarPalavrasAoTexto(String texto) throws PalavraMaiorQueTamanhoLimiteException {
-		if (texto != null && !texto.isEmpty()) {
-			for (String linha : texto.split("\n")) {
-				for (String palavra : linha.split(" ")) {
-					adicionaPalavra(palavra);
-				}
-				adicionarLinha();
-			}
-		}
+	private void adicionarPalavrasAoTexto(String texto) {
+		Arrays.stream(texto.split("\n"))
+			  .forEach(linha -> quebrarLinha(linha));
 	}
 	
-	public void adicionaPalavra(String palavra) throws PalavraMaiorQueTamanhoLimiteException {
+	private void quebrarLinha(String linha) {
+		Arrays.stream(linha.split(" "))
+			  .forEach(palavra -> adicionaPalavra(palavra));
+		
+		adicionarLinha();
+	}
+	
+	public void adicionaPalavra(String palavra) throws RuntimeException {
 		try {
 			linhaAtual.adicionarPalavra(palavra);
 		} catch (PalavraExcedeTamanhoLinhaException e) {
@@ -48,10 +50,8 @@ public class RafaelDuarteFormatter extends StringFormatter {
 	}
 	
 	private String getTextoFormatado() {
-		StringBuilder sb = new StringBuilder();
-		for (LinhaTexto linha : linhas) {
-			sb.append(linha.toString()).append("\n");
-		}
-		return sb.toString();
+		return linhas.stream()
+					 .map(l -> l.toString())
+					 .collect(Collectors.joining("\n"));
 	}
 }
