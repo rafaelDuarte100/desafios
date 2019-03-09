@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import idwall.desafio.string.IdwallFormatter;
 import idwall.desafio.string.StringFormatter;
 
-public class RafaelDuarteFormatterTest {
+public class IdwallFormatterTest {
 
 	@Test
 	public void testarFormatarTextoSemJustificar() {
