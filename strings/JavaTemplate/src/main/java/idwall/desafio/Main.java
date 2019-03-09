@@ -47,7 +47,6 @@ public class Main {
 
         // Print output text
         System.out.println("Output: ");
-        System.out.println(outputText);
-        
+        System.out.println(outputText);        
     }
 }
