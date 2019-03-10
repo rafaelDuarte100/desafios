@@ -1,5 +1,13 @@
 package idwall.desafio;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import idwall.desafio.string.IdwallFormatter;
 import idwall.desafio.string.StringFormatter;
 
@@ -14,29 +22,57 @@ public class Main {
     
     private static final Integer DEFAULT_LIMIT = 40;
     private static final Boolean DEFAULT_JUSTIFY = true;
-
+    
     public static void main(String[] args) {
         String text = DEFAULT_INPUT_TEXT;
         Integer limit = DEFAULT_LIMIT;
         Boolean justify = DEFAULT_JUSTIFY;
-        switch (args.length) {
-            case 1:
-                text = args[0];
-                break;
-            case 2:
-                text = args[0];
-                limit = Integer.parseInt(args[1]);
-                break;
-            case 3:
-                text = args[0];
-                limit = Integer.parseInt(args[1]);
-                justify = Boolean.parseBoolean(args[2]);
-                break;
-        }
+        
+        int opcao = -1;
+        
+        imprimeMenu();    	
+    	Scanner scan = new Scanner(System.in);
+    	Scanner scanText = new Scanner(System.in);
+    	
+    	try {
+    		try {
+    			opcao = scan.nextInt();
+			} catch (Exception e) {
+				System.out.println("OPÇÃO ÍNVÁLIDA!");
+			}
+        	
+    		if (opcao == 1 || opcao == 2) {
+    			if (opcao == 2) {
+            		String caminhoArquivo = lerCaminhoArquivo(scanText);
+            		text = lerArquivo(text, caminhoArquivo);
+            	}
+    			limit = lerTamanhoLimite(scan);
+	    		justify = lerSeTextoDeveSerJustificado(scan);
+	    		formata(text, limit, justify);
+    		}
+        	
+		} finally {
+			scan.close();
+			scanText.close();
+		}    
+    }
 
-        // Print input data
+	private static void imprimeMenu() {
+		System.out.println("+---------------------------------------------------+");
+    	System.out.println("|                    STRING FORMATTER               |");
+    	System.out.println("| DIGITE:                                           |");
+    	System.out.println("| 1 - USAR O TEXO PADRÃO.                           |");
+    	System.out.println("| 2 - IMPORTAR UM ARQUIVO TXT.                      |");
+    	System.out.println("|                                                   |");
+    	System.out.println("+---------------------------------------------------+");
+	}
+    
+    public static void formata(String text, int limit, boolean justify) {
+    	// Print input data
         System.out.println("Inputs: ");
+        System.out.println("=========================");
         System.out.println("Text: " + text);
+        System.out.println("=========================");
         System.out.println("Limit: " + limit);
         System.out.println("Should justify: " + justify);
         System.out.println("=========================");
@@ -47,6 +83,41 @@ public class Main {
 
         // Print output text
         System.out.println("Output: ");
-        System.out.println(outputText);        
+        System.out.println(outputText);
+        System.out.println("=========================");
     }
+
+	private static String lerArquivo(String text, String caminhoArquivo) {
+		Path caminho = Paths.get(caminhoArquivo);
+		Stream<String> linhas = null;
+		try {
+			linhas = Files.lines(caminho);
+			text = linhas.collect(Collectors.joining("\n"));
+		} catch (IOException e) {
+			System.out.println("ARQUIVO NÃO ENCONTRADO!");
+		} finally {
+			if (linhas != null) linhas.close();
+		}
+		return text;
+	}
+
+	private static String lerCaminhoArquivo(Scanner scanText) {
+		System.out.println("QUAL O CAMINHO COMPLETO DO ARQUIVO?");
+		String caminhoArquivo = scanText.nextLine();
+		return caminhoArquivo;
+	}
+
+	private static Boolean lerSeTextoDeveSerJustificado(Scanner scan) {
+		Boolean justify;
+		System.out.println("O TEXTO DEVE SER JUSTIFICADO? (true, false)");
+		justify = scan.nextBoolean();
+		return justify;
+	}
+
+	private static Integer lerTamanhoLimite(Scanner scan) {
+		Integer limit;
+		System.out.println("QUAL O TAMANHO LIMITE?");
+		limit = scan.nextInt();
+		return limit;
+	}
 }
