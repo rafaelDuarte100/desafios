@@ -3,7 +3,6 @@ package idwall.desafio;
 import java.util.List;
 import java.util.Scanner;
 
-import idwall.desafio.crawlers.AbstractWebDriverCrawler;
 import idwall.desafio.crawlers.IdWallCrawler;
 import idwall.desafio.modelo.ThreadReddit;
 
@@ -17,9 +16,10 @@ public class Main {
 		System.out.println("Buscando...");
 		scan.close();
 		
-		AbstractWebDriverCrawler webCrawler = new IdWallCrawler();
+		IdWallCrawler webCrawler = new IdWallCrawler();
 		List<ThreadReddit> conteudos = webCrawler.getListaConteudo(subReddits);
 		imprimirResultado(conteudos);
+		
 	}
 
 	private static void imprimirResultado(List<ThreadReddit> conteudos) {

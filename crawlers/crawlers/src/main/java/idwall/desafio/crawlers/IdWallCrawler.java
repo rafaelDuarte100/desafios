@@ -5,80 +5,90 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import idwall.desafio.modelo.ThreadReddit;
 
-public class IdWallCrawler extends AbstractWebDriverCrawler {
-	
+public class IdWallCrawler {
+
 	protected static final String URL_BASE = "https://old.reddit.com/r/";
 	protected static final String SULFIXO_URL = "/top/?sort=top";
-	protected static final String XPATH_TABELA_THREADS = "//div[@id='siteTable']";
-	protected static final String XPATH_THREADS = XPATH_TABELA_THREADS + "//div[contains(@id, 'thing_t3')]";
 	
 	private List<ThreadReddit> threads;
 	private int minUpVotes = 5000;
+	private Document pagina;
 	
-	public IdWallCrawler() throws IOException {
-		super();
+	public IdWallCrawler() {
 		threads = new ArrayList<>();
 	}
-
-	@Override
+	
+	public IdWallCrawler(int minUpVotes) {
+		threads = new ArrayList<>();
+		this.minUpVotes = minUpVotes;
+	}
+	
 	public List<ThreadReddit> getListaConteudo(String subreddits) {
 		Arrays.stream(subreddits.split(";"))
 			  .forEach(subreddit -> recuperarThreadsPorSubReddit(subreddit));
-		closeDriver();
 		return threads;
 	}
 	
-	public void recuperarThreadsPorSubReddit(String subReddit) throws RuntimeException {
-		get(URL_BASE + subReddit + SULFIXO_URL);
-		
+	public void recuperarThreadsPorSubReddit(String subReddit) {
+		lerPagina(URL_BASE + subReddit + SULFIXO_URL);
+				
 		while (subRedditPossuiThreadComMinimoDeUpVotes()) {
-			for (WebElement thread : findElementsByXpath(XPATH_THREADS)) {
-				if (getUpVotesDaThread(thread) >= minUpVotes) {
+			for (Element thread : pagina.getElementById("siteTable").select("[id^=thing_t3]")) {
+				if (getUpVoteDaThread(thread) >= minUpVotes) {
 					threads.add(converterWebElementParaThreadReddit(thread));
-				}
-				else {
+				} else {
 					return;
 				}
 			}
 			nextPage();
 		}
 	}
-	
-	public void nextPage() throws RuntimeException {
-		click(XPATH_TABELA_THREADS + "//a[text()='next ›']");
-	}
-	
-	public boolean subRedditPossuiThreadComMinimoDeUpVotes() {
+
+	private void lerPagina(String url) {
 		try {
-			WebElement primeiraThread = findByXpath(XPATH_THREADS);
-			return getUpVotesDaThread(primeiraThread) >= minUpVotes;
-		} catch (NoSuchElementException e) {
-			return false;
+			pagina = Jsoup.connect(url).get();
+		} catch (IOException e) {
+			throw new RuntimeException("Não foi possível se conectar com o reddit.");
 		}
 	}
 	
-	public ThreadReddit converterWebElementParaThreadReddit(WebElement thread) {
+	public void nextPage() {
+		Element linkNext = pagina.getElementById("siteTable").selectFirst(".next-button > a");
+		lerPagina(linkNext.attr("href"));
+	}
+	
+	public boolean subRedditPossuiThreadComMinimoDeUpVotes() {
+		Elements threads = pagina.getElementById("siteTable").select("[id^=thing_t3]");
+		if (threads.size() > 0) {
+			Element thread = threads.first();
+			return getUpVoteDaThread(thread) >= minUpVotes;
+		}
+		return false;
+	}
+	
+	public ThreadReddit converterWebElementParaThreadReddit(Element thread) {
 		ThreadReddit threadReddit = new ThreadReddit();
 		threadReddit.setSubReddit(getSubRedditDaThread(thread));
-		threadReddit.setUpVotes(getUpVotesDaThread(thread));
+		threadReddit.setUpVotes(getUpVoteDaThread(thread));
 		threadReddit.setTitulo(getTituloDaThread(thread));
 		threadReddit.setLinkComentarios(getLinkComentariosDaThread(thread));
 		threadReddit.setLinkThread(getLinkDaThread(thread));
 		return threadReddit;
 	}
 	
-	private String getSubRedditDaThread(WebElement thread) {
-		return thread.getAttribute("data-subreddit");
+	public String getSubRedditDaThread(Element thread) {
+		return thread.attr("data-subreddit");
 	}
 	
-	private int getUpVotesDaThread(WebElement thread) {
-		String upVotes = findByXpath(getSeletorUpVote(thread)).getText();
-		
+	public int getUpVoteDaThread(Element thread) {
+		String upVotes = thread.selectFirst(".midcol.unvoted > .score.unvoted").text();
 		if (upVotes.replaceAll("[^0-9]","").length() > 0) {
 			try {
 				return Integer.parseInt(upVotes);
@@ -86,34 +96,18 @@ public class IdWallCrawler extends AbstractWebDriverCrawler {
 				return (int) (Double.parseDouble(upVotes.substring(0, upVotes.length() - 2)) * 1000);
 			}
 		}
-		return 0;		
+		return 0;
 	}
 	
-	private String getSeletorUpVote(WebElement thread) {
-		return getSeletorThread(thread) + "//*[@class='score unvoted']";
+	public String getTituloDaThread(Element thread) {
+		return thread.selectFirst(".entry.unvoted > .top-matter > .title > a").text();
 	}
 	
-	private String getLinkComentariosDaThread(WebElement thread) {
-		return findByXpath(getSeletorLinkComentarios(thread)).getAttribute("href");
+	public String getLinkComentariosDaThread(Element thread) {
+		return thread.selectFirst("div.entry.unvoted > div.top-matter > ul > li.first > a").attr("href");
 	}
 	
-	private String getSeletorLinkComentarios(WebElement thread) {
-		return getSeletorThread(thread) + "//a[@data-event-action='comments']";
-	}
-	
-	private String getLinkDaThread(WebElement thread) {
-		return findByXpath(getSeletorTitulo(thread)).getAttribute("href");
-	}
-	
-	private String getTituloDaThread(WebElement thread) {
-		return findByXpath(getSeletorTitulo(thread)).getText();
-	}
-	
-	private String getSeletorTitulo(WebElement thread) {
-		return getSeletorThread(thread) + "//div[@class='top-matter']/p[@class='title']/a";
-	}
-	
-	private String getSeletorThread(WebElement thread) {
-		return "//div[@id='" + thread.getAttribute("id") + "']";
+	public String getLinkDaThread(Element thread) {
+		return thread.selectFirst(".entry.unvoted > .top-matter > .title > a").attr("href");
 	}
 }
