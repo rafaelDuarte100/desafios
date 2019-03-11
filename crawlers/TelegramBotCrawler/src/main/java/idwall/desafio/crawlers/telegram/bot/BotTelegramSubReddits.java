@@ -1,4 +1,4 @@
-package idall.desafio.crawlers.telegram.bot;
+package idwall.desafio.crawlers.telegram.bot;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,7 +20,6 @@ import idwall.desafio.modelo.ThreadReddit;
 public class BotTelegramSubReddits extends Thread {
 
 	protected TelegramBot bot;
-	protected boolean stop;
 	protected int indiceMensagem;
 	private IdWallCrawler idWallCrawler;
 	
@@ -38,7 +37,7 @@ public class BotTelegramSubReddits extends Thread {
 		System.out.println("Iniciando bot...");
 		indiceMensagem = 0;
 		
-		while(!stop) {
+		while(true) {
 			List<Update> updates = lerMensagens();
 			updates.stream()
 				   .forEach(update -> { indiceMensagem = update.updateId() + 1;
@@ -101,15 +100,9 @@ public class BotTelegramSubReddits extends Thread {
 	}
 	
 	private void enviarResposta(Update update, String resposta) {
-		if (!stop) {
-			bot.execute(new SendChatAction(update.message().chat().id(), ChatAction.typing.name()));
-			bot.execute(new SendMessage(update.message().chat().id(), resposta));
-			System.out.println("Resposta enviada.");
-		}
-	}
-	
-	public void parar() {
-		stop = true;
+		bot.execute(new SendChatAction(update.message().chat().id(), ChatAction.typing.name()));
+		bot.execute(new SendMessage(update.message().chat().id(), resposta));
+		System.out.println("Resposta enviada.");
 	}
 	
 	private String getToken() throws IOException {

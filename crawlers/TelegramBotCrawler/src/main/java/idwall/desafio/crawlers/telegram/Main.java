@@ -1,8 +1,8 @@
-package idall.desafio.crawlers.telegram;
+package idwall.desafio.crawlers.telegram;
 
 import java.io.IOException;
 
-import idall.desafio.crawlers.telegram.bot.BotTelegramSubReddits;
+import idwall.desafio.crawlers.telegram.bot.BotTelegramSubReddits;
 
 public class Main {
 
