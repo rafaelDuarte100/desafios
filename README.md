@@ -16,4 +16,4 @@ crawlers  README.md  strings
 Após efetuar o clone do projeto será possível visualizar a implementação para os seguintes desafios:
 
 1. [Manipulação de strings](https://github.com/rafaelDuarte100/desafios/blob/master/strings/README.md)
-2. [Crawlers](https://github.com/rafaelDuarte100/desafios/edit/master/crawlers/README.md)
+2. [Crawlers](https://github.com/rafaelDuarte100/desafios/blob/master/crawlers/README.md)
