@@ -30,9 +30,9 @@
 			<version>4.1.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.mylib</groupId>
-			<artifactId>mylib-core</artifactId>
-			<version>0.0.1</version>
+			<groupId>idwall.desafio.crawlers</groupId>
+			<artifactId>crawlers</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jsoup</groupId>
@@ -67,9 +67,9 @@
 						<configuration>
 							<file>${basedir}/src/main/resources/crawler.jar</file>
 							<repositoryLayout>default</repositoryLayout>
-							<groupId>com.mylib</groupId>
-							<artifactId>mylib-core</artifactId>
-							<version>0.0.1</version>
+							<groupId>idwall.desafio.crawlers</groupId>
+							<artifactId>crawlers</artifactId>
+							<version>0.0.1-SNAPSHOT</version>
 							<packaging>jar</packaging>
 							<generatePom>true</generatePom>
 						</configuration>
