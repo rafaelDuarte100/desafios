@@ -22,17 +22,29 @@ $ mvn package
 ## Executando Aplicação
 
 `java -jar target/StringFormatter-1.0-SNAPSHOT.jar `
-> Inputs: 
-> Text: In the beginning God created the heavens and the earth. Now the earth was formless and empty, darkness was over the surface of the deep, and the Spirit of God was hovering over the waters.
-
-> And God said, "Let there be light," and there was light. God saw that the light was good, and he separated the light from the darkness. God called the light "day," and the darkness he called "night." And there was evening, and there was morning - the first day.
-
 ```
++---------------------------------------------------+
+|                    STRING FORMATTER               |
+| DIGITE:                                           |
+| 1 - USAR O TEXO PADRÃO.                           |
+| 2 - IMPORTAR UM ARQUIVO TXT.                      |
+|                                                   |
++---------------------------------------------------+
+1
+QUAL O TAMANHO LIMITE?
+> 40
+O TEXTO DEVE SER JUSTIFICADO? (true, false)
+> true
+Inputs:
+=========================
+Text: In the beginning God created the heavens and the earth. Now the earth was formless and empty, darkness was over the surface of the deep, and the Spirit of God was hovering over the waters.
+
+And God said, "Let there be light," and there was light. God saw that the light was good, and he separated the light from the darkness. God called the light "day," and the darkness he called "night." And there was evening, and there was morning - the first day.
+=========================
 Limit: 40
 Should justify: true
-
 =========================
-Output: 
+Output:
 In the beginning God created the heavens
 and   the   earth.  Now  the  earth  was
 formless  and  empty,  darkness was over
@@ -46,4 +58,5 @@ from  the darkness. God called the light
 "day,"   and   the  darkness  he  called
 "night."  And  there  was  evening,  and
 there  was  morning  -  the  first  day.
+=========================
 ```
