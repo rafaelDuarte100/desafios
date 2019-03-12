@@ -105,3 +105,6 @@ from the darkness. God called the light
 there was morning - the first day.
 =========================
 ```
+## Descrição da Solução:
+
+A solução deste problema foi criar uma entidade que representasse as linhas do texto já formatado, tal que essa entidade possuísse a lógica para se adicionar palavras no texto de forma a respeitar o limite de comprimento da linha, após adicionar todas as palavras do texto de entrada em uma lista dessas entidades, caso se deseje também justificar o texto, então para cada linha que foi criada, é chamado um método dessa entidade para justificar a linha, por fim as linhas são unidas em uma só string e retornada como o resultado da formatação.
