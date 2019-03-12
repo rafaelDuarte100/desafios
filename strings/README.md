@@ -65,6 +65,7 @@ there  was  morning  -  the  first  day.
 ### Com Texto em Arquivo
 
 `java -jar target/StringFormatter-1.0-SNAPSHOT.jar `
+```
 +---------------------------------------------------+
 |                    STRING FORMATTER               |
 | DIGITE:                                           |
@@ -103,3 +104,4 @@ from the darkness. God called the light
 "night." And there was evening, and
 there was morning - the first day.
 =========================
+```
