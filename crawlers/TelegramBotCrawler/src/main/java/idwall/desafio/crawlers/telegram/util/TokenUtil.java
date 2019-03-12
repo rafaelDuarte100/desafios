@@ -1,4 +1,4 @@
-package idwall.desafio.crawlers.telegram.helper;
+package idwall.desafio.crawlers.telegram.util;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

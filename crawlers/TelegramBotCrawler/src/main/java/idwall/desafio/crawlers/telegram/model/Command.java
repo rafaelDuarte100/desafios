@@ -1,25 +1,25 @@
-package idwall.desafio.crawlers.telegram.bot;
+package idwall.desafio.crawlers.telegram.model;
 
 import com.pengrad.telegrambot.model.Update;
 
-public class Comand {
+public class Command {
 
 	private long idChat;
-	private String comand;
+	private String command;
 	private boolean hasParameter;
 	private String subReddits;
 	
-	public Comand(Update update) {
+	public Command(Update update) {
 		idChat = update.message().chat().id();
 		String textMessage = update.message().text();
 		
 		if (textMessage != null) {
-			String comandParts[] = textMessage.split(" ");
-			comand = comandParts[0];
+			String commandParts[] = textMessage.split(" ");
+			command = commandParts[0];
 			
-			if (comandParts.length > 1) {
+			if (commandParts.length > 1) {
 				hasParameter = true;
-				subReddits = comandParts[1];
+				subReddits = commandParts[1];
 			}
 		}
 	}
@@ -33,7 +33,7 @@ public class Comand {
 	}
 	
 	public boolean isvalid() {
-		return comand != null 
+		return command != null 
 				&& (isStartComand()
 					|| isHelpComand()
 					|| (isNadaPraFazerComand() && hasParameter));
@@ -51,7 +51,7 @@ public class Comand {
 		return thisComandIs("/NadaPraFazer");
 	}
 	
-	private boolean thisComandIs(String comand) {
-		return this.comand.equals(comand);
+	private boolean thisComandIs(String command) {
+		return this.command.equals(command);
 	}
 }

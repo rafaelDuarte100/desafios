@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import com.pengrad.telegrambot.TelegramBot;
 
-import idwall.desafio.crawlers.telegram.bot.UpdatesListenerImpl;
-import idwall.desafio.crawlers.telegram.helper.TokenUtil;
+import idwall.desafio.crawlers.telegram.listener.UpdatesListenerImpl;
+import idwall.desafio.crawlers.telegram.util.TokenUtil;
 
 public class Main {
 

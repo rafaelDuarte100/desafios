@@ -1,4 +1,4 @@
-package idwall.desafio.crawlers.telegram.bot;
+package idwall.desafio.crawlers.telegram.listener;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import com.pengrad.telegrambot.request.SendChatAction;
 import com.pengrad.telegrambot.request.SendMessage;
 
 import idwall.desafio.crawlers.IdWallCrawler;
+import idwall.desafio.crawlers.telegram.model.Command;
 import idwall.desafio.modelo.ThreadReddit;
 
 public class UpdatesListenerImpl implements UpdatesListener {
@@ -20,7 +21,7 @@ public class UpdatesListenerImpl implements UpdatesListener {
 	
 	private static final String DEFAUT_MESSAGE_HELP = "Comandos existentes:"
 													+ "\n/Start -> Descreve a função deste bot."
-													+ "\n/Help -> Descreve os comandos existentes."
+													+ "\n/Help -> Descreve os commandos existentes."
 													+ "\n/NadaPraFazer [+ Lista de subrredits] -> Retorna lista de conteudos, "
 													+ "\npor exemplo /NadaPraFazer programming;dogs;brazil";
 	private TelegramBot bot;
@@ -34,40 +35,40 @@ public class UpdatesListenerImpl implements UpdatesListener {
 	@Override
 	public int process(List<Update> updates) {
 		updates.stream()
-			   .map(update -> new Comand(update))
+			   .map(update -> new Command(update))
 			   .forEach(update -> response(update));
 		return UpdatesListener.CONFIRMED_UPDATES_ALL;
 	}
 	
-	public void response(Comand comand) {
+	public void response(Command command) {
 		
-		if (comand.isvalid()) {
-			if (comand.isStartComand())
-				sendMessage(comand, DEFAUT_MESSAGE_START);
+		if (command.isvalid()) {
+			if (command.isStartComand())
+				sendMessage(command, DEFAUT_MESSAGE_START);
 			
-			if (comand.isHelpComand())
-				sendMessage(comand, DEFAUT_MESSAGE_HELP);
+			if (command.isHelpComand())
+				sendMessage(command, DEFAUT_MESSAGE_HELP);
 			
-			if (comand.isNadaPraFazerComand())
-				sendResultMessageOfCrawler(comand);
+			if (command.isNadaPraFazerComand())
+				sendResultMessageOfCrawler(command);
 		}
 		else {
-			sendMessage(comand, "Não Entendi...");
+			sendMessage(command, "Não Entendi...");
 		}
 	}
 
-	private void sendResultMessageOfCrawler(Comand comand) {
-		List<ThreadReddit> threads = crawler.getListaConteudo(comand.getSubReddits());
+	private void sendResultMessageOfCrawler(Command command) {
+		List<ThreadReddit> threads = crawler.getListaConteudo(command.getSubReddits());
 		if (threads.isEmpty()) {
-			sendMessage(comand, "Nenhum conteudo encontrado...");
+			sendMessage(command, "Nenhum conteudo encontrado...");
 		}
 		else {
-			threads.stream().forEach(thread -> sendMessage(comand, thread.toString()));
+			threads.stream().forEach(thread -> sendMessage(command, thread.toString()));
 		}
 	}
 	
-	public void sendMessage(Comand comand, String message) {
-		bot.execute(new SendChatAction(comand.getIdChat(), ChatAction.typing.name()));
-		bot.execute(new SendMessage(comand.getIdChat(), message));
+	public void sendMessage(Command command, String message) {
+		bot.execute(new SendChatAction(command.getIdChat(), ChatAction.typing.name()));
+		bot.execute(new SendMessage(command.getIdChat(), message));
 	}
 }
