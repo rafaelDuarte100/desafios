@@ -20,6 +20,7 @@ $ cd strings/JavaTemplate/
 $ mvn package
 ```
 ## Executando Aplicação
+### Com Texto Padrão
 
 `java -jar target/StringFormatter-1.0-SNAPSHOT.jar `
 ```
@@ -60,3 +61,45 @@ from  the darkness. God called the light
 there  was  morning  -  the  first  day.
 =========================
 ```
+
+### Com Texto em Arquivo
+
+`java -jar target/StringFormatter-1.0-SNAPSHOT.jar `
++---------------------------------------------------+
+|                    STRING FORMATTER               |
+| DIGITE:                                           |
+| 1 - USAR O TEXO PADRÃO.                           |
+| 2 - IMPORTAR UM ARQUIVO TXT.                      |
+|                                                   |
++---------------------------------------------------+
+2
+QUAL O CAMINHO COMPLETO DO ARQUIVO?
+> C:\Desenvolvimento\texto.txt
+QUAL O TAMANHO LIMITE?
+> 40
+O TEXTO DEVE SER JUSTIFICADO? (true, false)
+> false
+Inputs:
+=========================
+Text: Text: In the beginning God created the heavens and the earth. Now the earth was formless and empty, darkness was over the surface of the deep, and the Spirit of God was hovering over the waters.
+
+And God said, "Let there be light," and there was light. God saw that the light was good, and he separated the light from the darkness. God called the light "day," and the darkness he called "night." And there was evening, and there was morning - the first day.
+=========================
+Limit: 40
+Should justify: false
+=========================
+Output:
+Text: In the beginning God created the
+heavens and the earth. Now the earth was
+formless and empty, darkness was over
+the surface of the deep, and the Spirit
+of God was hovering over the waters.
+
+And God said, "Let there be light," and
+there was light. God saw that the light
+was good, and he separated the light
+from the darkness. God called the light
+"day," and the darkness he called
+"night." And there was evening, and
+there was morning - the first day.
+=========================
