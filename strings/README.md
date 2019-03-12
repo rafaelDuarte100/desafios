@@ -12,6 +12,10 @@ Criar um plugin que receba:
     3.1 Cada linha tenha no máximo o comprimento informado no item 2,
     
     3.2 O texto deve ser justificado dependendo do valor informado no item 3.
+    
+## Descrição da Solução:
+
+A solução deste problema foi criar uma entidade que representasse as linhas do texto já formatado, tal que essa entidade possuísse a lógica para se adicionar palavras no texto de forma a respeitar o limite de comprimento da linha, após adicionar todas as palavras do texto de entrada em uma lista dessas entidades, caso se deseje também justificar o texto, então para cada linha que foi criada, é chamado um método dessa entidade para justificar a linha, por fim as linhas são unidas em uma só string e retornada como o resultado da formatação.
 
 #### Acessando o Projeto
 
@@ -105,6 +109,3 @@ from the darkness. God called the light
 there was morning - the first day.
 =========================
 ```
-## Descrição da Solução:
-
-A solução deste problema foi criar uma entidade que representasse as linhas do texto já formatado, tal que essa entidade possuísse a lógica para se adicionar palavras no texto de forma a respeitar o limite de comprimento da linha, após adicionar todas as palavras do texto de entrada em uma lista dessas entidades, caso se deseje também justificar o texto, então para cada linha que foi criada, é chamado um método dessa entidade para justificar a linha, por fim as linhas são unidas em uma só string e retornada como o resultado da formatação.
