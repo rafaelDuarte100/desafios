@@ -14,7 +14,7 @@ crawlers  README.md  strings
 ```
 ### Configurado token para o bot
 ```
-$ touch desafio_rafael/crawler/TelegramBotCrawler/src/main/resources/token.properties
+$ touch desafio_rafael/crawlers/TelegramBotCrawler/src/main/resources/token.properties
 ```
 Apos criar o arquivo token.properties, será necessário adicionar o token do seu bot seguindo 
 o layout:
